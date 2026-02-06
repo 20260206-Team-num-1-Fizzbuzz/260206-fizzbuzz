@@ -9,13 +9,24 @@ def play_random(n=100):
 
 def play_optimal(n=100):
     """순환 전략: 자기 번호부터 시작해서 상자 안의 번호를 따라감"""
+    boxes = list(range(n))
+    random.shuffle(boxes)
+    for prisoner in range(n):
+        box = prisoner
+        for _ in range(n // 2):
+            if boxes[box] == prisoner:
+                break
+            box = boxes[box]
+        else:
+            return False
+    return True
 
 if __name__ == "__main__":
     trials = 100_000
     
     random_wins = sum(play_random() for _ in range(trials))
-    # optimal_wins = sum(play_optimal() for _ in range(trials))
+    optimal_wins = sum(play_optimal() for _ in range(trials))
     
     print(f"시행 횟수: {trials:,}회")
     print(f"무작위 전략 성공률: {random_wins/trials*100:.4f}%")
-    # print(f"순환 전략 성공률: {optimal_wins/trials*100:.4f}%")
+    print(f"순환 전략 성공률: {optimal_wins/trials*100:.4f}%")
